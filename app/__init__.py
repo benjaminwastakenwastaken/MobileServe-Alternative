@@ -1,4 +1,4 @@
 # setting up flask
-from flask import flask
+from flask import Flask
 app = Flask(__name__)
 from app import routes
