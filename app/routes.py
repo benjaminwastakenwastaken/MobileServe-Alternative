@@ -4,10 +4,16 @@ from flask import request, redirect
 from app.models import Alert
 
 
+
 # creating the first page
 @app.route('/')
 def test():
     return "Mcdonogh Service Hours Page"
+
+@app.route('/login')
+def login():
+    return "Login Page"
+    
 
 # https://www.geeksforgeeks.org/python/flask-http-method/
 @app.route('/submit', methods=['POST'])
@@ -28,3 +34,4 @@ def submit():
 def admin_alerts():
     alerts = Alert.query.order_by(Alert.created_at.desc()).all()
     return render_template('admin_alerts.html', alerts=alerts)
+
