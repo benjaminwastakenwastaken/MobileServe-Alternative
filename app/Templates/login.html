@@ -1,5 +1,28 @@
 <!DOCTYPE html>
-<head></head>
+<html>
+<body>
+    <h1> Log In </h1>
+    <form action="" method="post">
+        {{form.hidden_tag()}}
+        
+        <div>
+            {{form.username.label}}<br>
+            {{form.username()}}
+        </div>
 
-<body></body>
+        <div>
+            {{form.email.label}}<br>
+            {{form.email()}}
+        </div>
+
+        <div>
+            {{form.password.label}}<br>
+            {{form.password()}}
+        </div>
+
+        <div>
+            {{form.submit()}}
+        </div>
+    </form>
+</body>
 </html>
