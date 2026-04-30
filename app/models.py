@@ -10,6 +10,7 @@ from wtforms.widgets import NumberInput
 class Alert(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	action = db.Column()
+    
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

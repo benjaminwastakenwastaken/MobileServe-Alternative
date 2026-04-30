@@ -10,20 +10,9 @@ from app.models import Alert
 def test():
     return "Mcdonogh Service Hours Page"
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    @app.route('/login', methods = ['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        flash('Login requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('test'))
-        # check if logoin html works
-    return redirect(url_for('test'))
-    return render_template('login.html', title='Sign In', form=form)
-
-    
+    return "Login Page"
     
 
 # https://www.geeksforgeeks.org/python/flask-http-method/
