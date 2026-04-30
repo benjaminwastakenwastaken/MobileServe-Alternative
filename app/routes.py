@@ -1,4 +1,4 @@
-# importing app from __init__
+#importing app from __init__
 from app import app, db
 from flask import request, redirect
 from app.models import Alert
@@ -10,10 +10,10 @@ from app.models import Alert
 def test():
     return "Mcdonogh Service Hours Page"
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     return "Login Page"
-    
+
 
 # https://www.geeksforgeeks.org/python/flask-http-method/
 @app.route('/submit', methods=['POST'])
