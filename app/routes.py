@@ -2,10 +2,12 @@ from flask import render_template
 from app import app
 from flask import render_template, flash, redirect, url_for
 import sqlalchemy as sa
+import sqlalchemy.orm as so
 from app import db
-from app.forms import LoginForm, RegistrationForm
-from flask_login import logout_user, login_required, login_user, current_user
-from app.models import User
+from app.models import Alert,User
+from app.forms import LoginForm
+from flask_login import logout_user
+from flask_login import login_required
 from flask import request
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
@@ -25,13 +27,12 @@ def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
+    # basic should make it work for rough draft 
+    # need to make database and load_user protocoll
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
-            return redirect(url_for('login'))
-        login_user(user)
         return redirect(url_for('index'))
+        # TODO: Add actual login logic here
+        flash('Login requested for user {}'.format(form.username.data))
     return render_template('login.html', form=form)
     
 
@@ -41,8 +42,8 @@ def submit():
     username = request.form.get('username')
 
     alert = Alert(
-        action =="submission",
-        details==f"{username} submitted a service hour" #what the alert says
+        action ="submission",
+        details=f"{username} submitted a service hour" #what the alert says
     )
 
     db.session.add(alert)
