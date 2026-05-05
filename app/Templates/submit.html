@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Log Hours - MobileServe</title>
+</head>
+<body>
+
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Submit Service Hours</h2>
+
+<form method="post" action="{{ url_for('submit') }}">
+    {{ form.hidden_tag() }}
+
+    <p>
+        {{ form.hours.label }}<br>
+        {{ form.hours() }}
+    </p>
+
+    <p>
+        {{ form.details.label }}
+    </p>
+
+    <p>
+        {{ form.Org.label }}
+    </p>
+
+    <p>
+        {{ form.type() }} {{ form.type.label }}
+    </p>
+
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+
+{% endblock %}
+</body>
+</html>

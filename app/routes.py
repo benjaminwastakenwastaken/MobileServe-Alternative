@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 
 
 
-
 # creating the first page
 @app.route('/')
 @app.route('/index')
@@ -31,7 +30,7 @@ def login():
     
 
 # https://www.geeksforgeeks.org/python/flask-http-method/
-@app.route('/submit', methods=['POST'])
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
     # TODO: Implement service hour request submission using the Request model
     return redirect('/')
@@ -48,6 +47,7 @@ def logTime():
     return "Log Time Page"  # TODO: implement log time form
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))

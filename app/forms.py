@@ -17,5 +17,15 @@ class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    password2 = PasswordField(
+        'Repeat Password',
+        validators=[DataRequired(), EqualTo('password')]
+    )
     submit = SubmitField('Register')
+
+class SubmitForm(FlaskForm):
+        hours = IntegerField('How many hours of of service ', widget=NumberInput(min=0))
+        details = TextAreaField('What did you do? And who did you impact', validators=[Length(min=0)])
+        Org = TextAreaField('Who did you serve with', validators=[Length(min=0)])
+        type  = BooleanField('Was this direct service or not ')
+        submit = SubmitField('Submit')
