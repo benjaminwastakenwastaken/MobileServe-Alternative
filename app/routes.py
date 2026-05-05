@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from app import app, db
 from app.models import Admin, Student, Request
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, SubmitForm
 from flask_login import logout_user, login_required, current_user, login_user
 from functools import wraps
 from urllib.parse import urlsplit
