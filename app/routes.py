@@ -15,8 +15,6 @@ from datetime import datetime, timezone
 
 
 
-
-
 # creating the first page
 @app.route('/')
 @app.route('/index')
