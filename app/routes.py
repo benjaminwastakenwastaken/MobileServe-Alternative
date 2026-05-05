@@ -142,6 +142,7 @@ def student_dashboard():
 @app.route('/submit', methods=['GET', 'POST'])
 @student_required
 def submit():
+    form = SubmitForm()
     # TODO: Implement service hour request submission using the Request model
     return render_template('submit.html',  form=form)
 
