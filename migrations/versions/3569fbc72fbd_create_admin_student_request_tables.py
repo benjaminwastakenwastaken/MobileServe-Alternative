@@ -1,8 +1,9 @@
-"""Student table
+"""Create admin student request
+  tables
 
-Revision ID: 7985c2cacc90
+Revision ID: 3569fbc72fbd
 Revises: 
-Create Date: 2026-05-05 09:08:33.138696
+Create Date: 2026-05-05 09:22:10.373327
 
 """
 from alembic import op
@@ -10,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '7985c2cacc90'
+revision = '3569fbc72fbd'
 down_revision = None
 branch_labels = None
 depends_on = None
