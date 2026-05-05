@@ -38,6 +38,18 @@
         </div>
 
         <div>
+            {{form.grad_year.label}}<br>
+            {{form.grad_year()}}
+            {% for error in form.grad_year.errors %}
+            <span style="color: red;">[{{error}}]</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{form.is_admin()}} {{form.is_admin.label}}
+        </div>
+
+        <div>
             {{form.submit()}}
         </div>
     </form>

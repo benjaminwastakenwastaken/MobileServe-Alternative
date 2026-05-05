@@ -10,7 +10,6 @@ from wtforms.widgets import NumberInput
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
@@ -21,6 +20,8 @@ class RegistrationForm(FlaskForm):
         'Repeat Password',
         validators=[DataRequired(), EqualTo('password')]
     )
+    grad_year = IntegerField('Graduation Year', widget=NumberInput(min=2020, max=2035))
+    is_admin = BooleanField('Register as Admin')
     submit = SubmitField('Register')
 
 class SubmitForm(FlaskForm):
