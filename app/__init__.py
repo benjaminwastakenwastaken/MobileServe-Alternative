@@ -16,4 +16,8 @@ from app import routes, models
 
 @login_manager.user_loader
 def load_user(id):
-    return models.User.query.get(int(id))
+    # Try to find user as Student first, then Admin
+    user = models.Student.query.get(int(id))
+    if user is None:
+        user = models.Admin.query.get(int(id))
+    return user
