@@ -40,6 +40,7 @@ def login():
 @app.route('/submit', methods=['POST'])
 def submit():
     username = request.form.get('username')
+    form = SubmitForm()
 
     alert = Alert(
         action ="submission",
@@ -48,7 +49,7 @@ def submit():
 
     db.session.add(alert)
     db.session.commit()
-
+    return render_template('submit.html', form=form)
     return redirect('/')
 
 @app.route('/admin/alerts')
