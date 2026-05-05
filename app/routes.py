@@ -5,12 +5,14 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from app import db
 from app.models import Alert,User
-from app.forms import LoginForm
+from app.forms import LoginForm, SubmitForm, RegistrationForm
 from flask_login import logout_user
 from flask_login import login_required
+from flask_login import current_user
 from flask import request
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
+
 
 
 
@@ -37,20 +39,26 @@ def login():
     
 
 # https://www.geeksforgeeks.org/python/flask-http-method/
-@app.route('/submit', methods=['POST'])
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
-    username = request.form.get('username')
+    
     form = SubmitForm()
 
-    alert = Alert(
-        action ="submission",
-        details=f"{username} submitted a service hour" #what the alert says
-    )
+    if request.method == 'POST':
 
-    db.session.add(alert)
-    db.session.commit()
+        username = request.form.get('username')
+
+        alert = Alert(
+            action ="submission",
+            details=f"{username} submitted a service hour" #what the alert says
+        )
+
+        db.session.add(alert)
+        db.session.commit()
+
+        return render_template('submit.html', form=form)
     return render_template('submit.html', form=form)
-    return redirect('/')
+
 
 @app.route('/admin/alerts')
 def admin_alerts():
@@ -63,6 +71,7 @@ def logTime():
     return "Log Time Page"  # TODO: implement log time form
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
