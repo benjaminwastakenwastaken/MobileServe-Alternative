@@ -143,8 +143,7 @@ def student_dashboard():
 @student_required
 def submit():
     # TODO: Implement service hour request submission using the Request model
-    return redirect(url_for('student_dashboard'))
-
+    return render_template('submit.html',  form=form)
 
 @app.route('/logout')
 @login_required
