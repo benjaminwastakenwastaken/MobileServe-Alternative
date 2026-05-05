@@ -30,7 +30,7 @@ class Alert(db.Model):
     action = db.Column(db.String(64))
 # To understand what orgonization student have served with
 # important for future steps after rough draft 
-class Orgonization(db.Model)
+class Orgonization(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(120), index=True)
 	description = db.Column(db.String(120), index=True)
