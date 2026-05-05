@@ -24,16 +24,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     action = db.Column(db.String(64))
     
-# basic user outline for Routes login
-class User(UserMixin, db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
-                                                unique=True)
-    email: so.Mapped[str] = so.mapped_column(sa.String(128), index=True,
-                                             unique=True)
-    # Should not care abt saftey or password hash for rough draft 
-    password: so.Mapped[str] = so.mapped_column(sa.String(256))
+
