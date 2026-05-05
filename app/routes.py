@@ -23,6 +23,12 @@ def login():
     # basic should make it work for rough draft 
     # need to make database and load_user protocoll
     if form.validate_on_submit():
+        student = Student.query.filter_by(username=form.username.data).first() 
+
+        if Student is None or not student.checkPassword(username=form.password.data):
+            flash("Invaild Username or Password")
+            return redirect(url_for('login'))
+
         return redirect(url_for('index'))
         # TODO: Add actual login logic here
         flash('Login requested for user {}'.format(form.username.data))
