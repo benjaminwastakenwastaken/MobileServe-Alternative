@@ -38,6 +38,10 @@
         </div>
 
         <div>
+            {{form.is_admin()}} {{form.is_admin.label}}
+        </div>
+
+        <div id="grad-year-field">
             {{form.grad_year.label}}<br>
             {{form.grad_year()}}
             {% for error in form.grad_year.errors %}
@@ -46,11 +50,19 @@
         </div>
 
         <div>
-            {{form.is_admin()}} {{form.is_admin.label}}
-        </div>
-
-        <div>
             {{form.submit()}}
         </div>
     </form>
+
+    <script>
+        const adminCheckbox = document.getElementById('is_admin');
+        const gradYearField = document.getElementById('grad-year-field');
+
+        function toggleGradYear() {
+            gradYearField.style.display = adminCheckbox.checked ? 'none' : 'block';
+        }
+
+        adminCheckbox.addEventListener('change', toggleGradYear);
+        toggleGradYear();
+    </script>
 {% endblock %}
