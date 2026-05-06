@@ -12,6 +12,9 @@ class Admin(UserMixin, db.Model):
     email = db.Column(db.String(128), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
 
+    def get_id(self):
+        return f'admin:{self.id}'
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -35,6 +38,9 @@ class Student(UserMixin, db.Model):
 
     # Relationship to requests
     requests = db.relationship('Request', backref='student', lazy='dynamic')
+
+    def get_id(self):
+        return f'student:{self.id}'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -118,16 +118,29 @@ def register():
         db.session.commit()
         flash('Registration successful! Please log in.')
         return redirect(url_for('login'))
+
+    # Show form validation errors
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(f'{field}: {error}')
+
     return render_template('register.html', form=form)
 
 
-# Admin dashboard
+# Admin dashboard - requests page (default)
 @app.route('/admin')
 @admin_required
 def admin_dashboard():
     requests = Request.query.order_by(Request.service_date.desc()).all()
+    return render_template('admin.html', requests=requests)
+
+
+# Admin - student list page
+@app.route('/admin/students')
+@admin_required
+def admin_students():
     students = Student.query.all()
-    return render_template('admin.html', requests=requests, students=students)
+    return render_template('studentList.html', students=students)
 
 
 # Student dashboard

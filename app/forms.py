@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Optional
 import sqlalchemy as sa
 from app import db
 from wtforms import TextAreaField
@@ -20,9 +20,13 @@ class RegistrationForm(FlaskForm):
         'Repeat Password',
         validators=[DataRequired(), EqualTo('password')]
     )
-    grad_year = IntegerField('Graduation Year', widget=NumberInput(min=2020, max=2035))
+    grad_year = IntegerField('Graduation Year', validators=[Optional()], widget=NumberInput(min=2020, max=2035))
     is_admin = BooleanField('Register as Admin')
     submit = SubmitField('Register')
+
+    def validate_grad_year(self, grad_year):
+        if not self.is_admin.data and not grad_year.data:
+            raise ValidationError('Graduation year is required for students.')
 
 class SubmitForm(FlaskForm):
         hours = IntegerField('How many hours of of service ', widget=NumberInput(min=0))

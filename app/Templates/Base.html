@@ -15,6 +15,10 @@
             <a href="{{ url_for('login') }}">Login</a>
             <a href="{{ url_for('register') }}">Register</a>
             {% else %}
+            {% if is_admin() %}
+            <a href="{{ url_for('admin_dashboard') }}">Requests</a>
+            <a href="{{ url_for('admin_students') }}">Students</a>
+            {% endif %}
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
         </div>

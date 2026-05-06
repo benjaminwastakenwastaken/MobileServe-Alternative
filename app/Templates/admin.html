@@ -4,34 +4,6 @@
 <h1>Admin Dashboard</h1>
 <p>Welcome, {{ current_user.username }}!</p>
 
-<div>
-    <h3>All Students</h3>
-    {% if students %}
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Grad Year</th>
-            <th>Direct Hours</th>
-            <th>Indirect Hours</th>
-            <th>Total Hours</th>
-        </tr>
-        {% for student in students %}
-        <tr>
-            <td>{{ student.username }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.grad_year }}</td>
-            <td>{{ student.hours_direct }}</td>
-            <td>{{ student.hours_indirect }}</td>
-            <td>{{ student.hours_direct + student.hours_indirect }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No students registered yet.</p>
-    {% endif %}
-</div>
-
 <hr>
 
 <div>
