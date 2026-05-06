@@ -54,7 +54,6 @@ def index():
     else:
         return redirect(url_for('student_dashboard'))
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -156,6 +155,11 @@ def student_dashboard():
 @student_required
 def submit():
     form = SubmitForm()
+    if form.validate_on_submit():
+        Hours = Request(
+            hours = form.hour.data,
+            details = form.detail.data
+            )
     # TODO: Implement service hour request submission using the Request model
     return render_template('submit.html',  form=form)
 
