@@ -18,6 +18,7 @@
             <th>Type</th>
             <th>Details</th>
             <th>Contact</th>
+            <th>Actions</th>
         </tr>
         {% for req in requests %}
         <tr>
@@ -28,6 +29,10 @@
             <td>{{ 'Direct' if req.direct else 'Indirect' }}</td>
             <td>{{ req.details }}</td>
             <td>{{ req.organization_contact or 'N/A' }}</td>
+            <td>
+                <button type="button">Approve</button>
+                <button type="button">Deny</button>
+            </td>
         </tr>
         {% endfor %}
     </table>
