@@ -158,7 +158,9 @@ def submit():
     if form.validate_on_submit():
         Hours = Request(
             hours = form.hour.data,
-            details = form.detail.data
+            details = form.details.data,
+            direct = form.direct.data,
+            
             )
     # TODO: Implement service hour request submission using the Request model
     return render_template('submit.html',  form=form)
