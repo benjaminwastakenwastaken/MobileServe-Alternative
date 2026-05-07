@@ -157,12 +157,18 @@ def submit():
     form = SubmitForm()
     if form.validate_on_submit():
         Hours = Request(
-            hours = form.hour.data,
+            student_id = current_user.id,
+            hours = form.hours.data,
+            organization = form.Org.data,
             details = form.details.data,
-            direct = form.direct.data,
-            
-            )
-    # TODO: Implement service hour request submission using the Request model
+            direct = form.type.data,
+            service_date = datetime.now()
+        )
+        db.session.add(Hours)
+        db.session.commit()
+        flash("Request submitted!")   
+        return redirect(url_for('student_dashboard'))
+
     return render_template('submit.html',  form=form)
 
 @app.route('/logout')
