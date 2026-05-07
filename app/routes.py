@@ -171,6 +171,27 @@ def submit():
 
     return render_template('submit.html',  form=form)
 
+# approve or deny service hors (admin only)
+@app.route('/admin/approve')
+@admin_required
+def approve():
+    id = request.args.get("id")
+    request_item = Request.query.get(id)
+    flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hours!")
+    db.session.delete(request_item)
+    db.session.commit()
+    return redirect(url_for("admin_dashboard"))
+
+@app.route('/admin/deny')
+@admin_required
+def deny():
+    id = request.args.get("id")
+    request_item = Request.query.get(id)
+    flash(f"Denied {request_item.student.username}'s request for {request_item.hours} hours!")
+    db.session.delete(request_item)
+    db.session.commit()
+    return redirect(url_for("admin_dashboard"))
+
 @app.route('/logout')
 @login_required
 def logout():

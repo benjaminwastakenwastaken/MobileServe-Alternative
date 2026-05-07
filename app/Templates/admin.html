@@ -30,8 +30,8 @@
             <td>{{ req.details }}</td>
             <td>{{ req.organization_contact or 'N/A' }}</td>
             <td>
-                <button type="button">Approve</button>
-                <button type="button">Deny</button>
+                <a href = "{{ url_for('approve')}}?id={{req.id}}">Approve</a>
+                <a href = "{{ url_for('deny')}}?id={{req.id}}">Deny</a>
             </td>
         </tr>
         {% endfor %}
