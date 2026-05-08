@@ -177,7 +177,10 @@ def submit():
 def approve():
     id = request.args.get("id")
     request_item = Request.query.get(id)
-    flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hours!")
+    if request_item.hours != 1:
+        flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hours!")
+    else:
+        flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hour!")
     db.session.delete(request_item)
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
@@ -188,7 +191,10 @@ def approve():
 def deny():
     id = request.args.get("id")
     request_item = Request.query.get(id)
-    flash(f"Denied {request_item.student.username}'s request for {request_item.hours} hours!")
+    if request_item.hours != 1:
+        flash(f"Denied {request_item.student.username}'s request for {request_item.hours} hours!")
+    else:
+        flash(f"Denied {request_item.student.username}'s request for {request_item.hours} hour!")
     db.session.delete(request_item)
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
