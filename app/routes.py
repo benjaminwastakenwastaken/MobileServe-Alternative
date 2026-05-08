@@ -171,7 +171,7 @@ def submit():
 
     return render_template('submit.html',  form=form)
 
-# approve or deny service hors (admin only)
+# approve service hours (admin only)
 @app.route('/admin/approve')
 @admin_required
 def approve():
@@ -182,6 +182,7 @@ def approve():
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
 
+# deny service hours (admin only)
 @app.route('/admin/deny')
 @admin_required
 def deny():
