@@ -177,10 +177,19 @@ def submit():
 def approve():
     id = request.args.get("id")
     request_item = Request.query.get(id)
-    if request_item.hours != 1:
-        flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hours!")
+    student = request_item.student
+
+    # Update student's hours based on direct or indirect
+    if request_item.direct:
+        student.hours_direct += request_item.hours
     else:
-        flash(f"Approved {request_item.student.username}'s request for {request_item.hours} hour!")
+        student.hours_indirect += request_item.hours
+
+    if request_item.hours != 1:
+        flash(f"Approved {student.username}'s request for {request_item.hours} hours!")
+    else:
+        flash(f"Approved {student.username}'s request for {request_item.hours} hour!")
+
     db.session.delete(request_item)
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
