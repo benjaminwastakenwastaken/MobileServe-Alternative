@@ -137,8 +137,72 @@ def admin_dashboard():
 @app.route('/admin/students')
 @admin_required
 def admin_students():
+    # Get filter parameters
+    grad_year = request.args.get('grad_year', type=int)
+    min_total = request.args.get('min_total', type=int)
+    min_direct = request.args.get('min_direct', type=int)
+    min_indirect = request.args.get('min_indirect', type=int)
+    above_requirement = request.args.get('above_requirement')
+    requirement = request.args.get('requirement', default=20, type=int)
+    sort_by = request.args.get('sort_by', default='username')
+    sort_order = request.args.get('sort_order', default='asc')
+
+    # Start with all students
     students = Student.query.all()
-    return render_template('studentList.html', students=students)
+
+    # Apply filters
+    if grad_year:
+        students = [s for s in students if s.grad_year == grad_year]
+    if min_total:
+        students = [s for s in students if (s.hours_direct + s.hours_indirect) >= min_total]
+    if min_direct:
+        students = [s for s in students if s.hours_direct >= min_direct]
+    if min_indirect:
+        students = [s for s in students if s.hours_indirect >= min_indirect]
+    if above_requirement:
+        students = [s for s in students if (s.hours_direct + s.hours_indirect) >= requirement]
+
+    # Apply sorting
+    reverse = (sort_order == 'desc')
+    if sort_by == 'grad_year':
+        students.sort(key=lambda s: s.grad_year, reverse=reverse)
+    elif sort_by == 'total':
+        students.sort(key=lambda s: s.hours_direct + s.hours_indirect, reverse=reverse)
+    elif sort_by == 'direct':
+        students.sort(key=lambda s: s.hours_direct, reverse=reverse)
+    elif sort_by == 'indirect':
+        students.sort(key=lambda s: s.hours_indirect, reverse=reverse)
+    else:
+        students.sort(key=lambda s: s.username.lower(), reverse=reverse)
+
+    return render_template('studentList.html', students=students,
+                           grad_year=grad_year, min_total=min_total,
+                           min_direct=min_direct, min_indirect=min_indirect,
+                           above_requirement=above_requirement, requirement=requirement,
+                           sort_by=sort_by, sort_order=sort_order)
+
+
+# Delete selected students (admin only)
+@app.route('/admin/students/delete', methods=['POST'])
+@admin_required
+def delete_students():
+    student_ids = request.form.getlist('student_ids')
+    if not student_ids:
+        flash('No students selected.')
+        return redirect(url_for('admin_students'))
+
+    count = 0
+    for student_id in student_ids:
+        student = Student.query.get(int(student_id))
+        if student:
+            # Delete all requests associated with this student first
+            Request.query.filter_by(student_id=student.id).delete()
+            db.session.delete(student)
+            count += 1
+
+    db.session.commit()
+    flash(f'Deleted {count} student(s).')
+    return redirect(url_for('admin_students'))
 
 
 

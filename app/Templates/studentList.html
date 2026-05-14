@@ -1,35 +1,101 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Admin Dashboard</h1>
+<h1>Student List</h1>
 <p>Welcome, {{ current_user.username }}!</p>
 
 <div>
-    <h3>All Students</h3>
+    <h3>Filter & Sort</h3>
+    <form method="GET" action="{{ url_for('admin_students') }}">
+        <table cellpadding="5">
+            <tr>
+                <td><label>Grad Year:</label></td>
+                <td><input type="number" name="grad_year" value="{{ grad_year or '' }}" placeholder="e.g. 2025"></td>
+
+                <td><label>Min Total Hours:</label></td>
+                <td><input type="number" name="min_total" value="{{ min_total or '' }}" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td><label>Min Direct Hours:</label></td>
+                <td><input type="number" name="min_direct" value="{{ min_direct or '' }}" placeholder="0"></td>
+
+                <td><label>Min Indirect Hours:</label></td>
+                <td><input type="number" name="min_indirect" value="{{ min_indirect or '' }}" placeholder="0"></td>
+            </tr>
+            <tr>
+                <td><label>Above Requirement:</label></td>
+                <td>
+                    <input type="checkbox" name="above_requirement" value="1" {{ 'checked' if above_requirement else '' }}>
+                    <input type="number" name="requirement" value="{{ requirement or 20 }}" style="width: 60px;"> hrs
+                </td>
+
+                <td><label>Sort By:</label></td>
+                <td>
+                    <select name="sort_by">
+                        <option value="username" {{ 'selected' if sort_by == 'username' else '' }}>Username</option>
+                        <option value="grad_year" {{ 'selected' if sort_by == 'grad_year' else '' }}>Grad Year</option>
+                        <option value="total" {{ 'selected' if sort_by == 'total' else '' }}>Total Hours</option>
+                        <option value="direct" {{ 'selected' if sort_by == 'direct' else '' }}>Direct Hours</option>
+                        <option value="indirect" {{ 'selected' if sort_by == 'indirect' else '' }}>Indirect Hours</option>
+                    </select>
+                    <select name="sort_order">
+                        <option value="asc" {{ 'selected' if sort_order == 'asc' else '' }}>Ascending</option>
+                        <option value="desc" {{ 'selected' if sort_order == 'desc' else '' }}>Descending</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <button type="submit">Apply</button>
+        <a href="{{ url_for('admin_students') }}"><button type="button">Clear</button></a>
+    </form>
+</div>
+
+<hr>
+
+<div>
+    <h3>All Students ({{ students|length }})</h3>
     {% if students %}
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Grad Year</th>
-            <th>Direct Hours</th>
-            <th>Indirect Hours</th>
-            <th>Total Hours</th>
-        </tr>
-        {% for student in students %}
-        <tr>
-            <td>{{ student.username }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.grad_year }}</td>
-            <td>{{ student.hours_direct }}</td>
-            <td>{{ student.hours_indirect }}</td>
-            <td>{{ student.hours_direct + student.hours_indirect }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <form method="POST" action="{{ url_for('delete_students') }}">
+        <button type="button" onclick="selectAll()">Select All</button>
+        <button type="button" onclick="deselectAll()">Deselect All</button>
+        <button type="submit" onclick="return confirm('Are you sure you want to delete the selected students?')">Delete Selected</button>
+        <br><br>
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Select</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Grad Year</th>
+                <th>Direct Hours</th>
+                <th>Indirect Hours</th>
+                <th>Total Hours</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td><input type="checkbox" name="student_ids" value="{{ student.id }}" class="student-checkbox"></td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.grad_year }}</td>
+                <td>{{ student.hours_direct }}</td>
+                <td>{{ student.hours_indirect }}</td>
+                <td>{{ student.hours_direct + student.hours_indirect }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
     {% else %}
-    <p>No students registered yet.</p>
+    <p>No students match the filters.</p>
     {% endif %}
 </div>
+
+<script>
+function selectAll() {
+    document.querySelectorAll('.student-checkbox').forEach(cb => cb.checked = true);
+}
+function deselectAll() {
+    document.querySelectorAll('.student-checkbox').forEach(cb => cb.checked = false);
+}
+</script>
 
 {% endblock %}
