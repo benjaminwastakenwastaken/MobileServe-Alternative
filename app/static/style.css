@@ -1,0 +1,19 @@
+html{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body > div:first-child{
+    background-color: rgb(178,83,19);
+    width: 100%;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+body > div:first-child a{
+    color: white;
+}

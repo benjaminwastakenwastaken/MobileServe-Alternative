@@ -3,10 +3,6 @@
     
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <style>
-        a    {color: white;}
-        title {color: white;}
-        </style>
         {% if title %}
         <title>{{ title }} - MobileServe</title>
         {% else %}
@@ -14,7 +10,7 @@
         {% endif %}
     </head>
     <body>
-         <div style="background-color: rgb(235, 153, 0);">
+         <div>
             MobileServe:
             <a href="{{ url_for('index') }}">Home</a>
             {% if current_user.is_anonymous %}
