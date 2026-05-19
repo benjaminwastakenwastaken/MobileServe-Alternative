@@ -12,8 +12,21 @@ body > div:first-child{
     width: 100%;
     padding: 10px 20px;
     box-sizing: border-box;
+    color:white;
+    font-size: 20px;
 }
 
 body > div:first-child a{
     color: white;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+body > div:first-child a:hover{
+    background-color: rgb(40,43,45);
+}
+
+hr {
+    display: none;
 }
