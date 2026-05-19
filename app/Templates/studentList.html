@@ -9,26 +9,16 @@
     <form method="GET" action="{{ url_for('admin_students') }}">
         <table cellpadding="5">
             <tr>
-                <td><label>Grad Year:</label></td>
-                <td><input type="number" name="grad_year" value="{{ grad_year or '' }}" placeholder="e.g. 2025"></td>
+                <td><label>Username:</label></td>
+                <td><input type="text" name="username" value="{{ username }}" placeholder="Search..."></td>
 
-                <td><label>Min Total Hours:</label></td>
-                <td><input type="number" name="min_total" value="{{ min_total or '' }}" placeholder="0"></td>
-            </tr>
-            <tr>
-                <td><label>Min Direct Hours:</label></td>
-                <td><input type="number" name="min_direct" value="{{ min_direct or '' }}" placeholder="0"></td>
-
-                <td><label>Min Indirect Hours:</label></td>
-                <td><input type="number" name="min_indirect" value="{{ min_indirect or '' }}" placeholder="0"></td>
-            </tr>
-            <tr>
                 <td><label>Above Requirement:</label></td>
                 <td>
                     <input type="checkbox" name="above_requirement" value="1" {{ 'checked' if above_requirement else '' }}>
-                    <input type="number" name="requirement" value="{{ requirement or 20 }}" style="width: 60px;"> hrs
+                    <input type="number" name="requirement" value="{{ requirement }}" style="width: 60px;"> hrs
                 </td>
-
+            </tr>
+            <tr>
                 <td><label>Sort By:</label></td>
                 <td>
                     <select name="sort_by">
@@ -43,9 +33,57 @@
                         <option value="desc" {{ 'selected' if sort_order == 'desc' else '' }}>Descending</option>
                     </select>
                 </td>
+
+                <td><label>Grad Years:</label></td>
+                <td>
+                    {% if all_grad_years %}
+                        {% for year in all_grad_years %}
+                        <label><input type="checkbox" name="grad_year" value="{{ year }}" {{ 'checked' if year in grad_years else '' }}> {{ year }}</label>
+                        {% endfor %}
+                    {% else %}
+                        <span>No students</span>
+                    {% endif %}
+                </td>
             </tr>
         </table>
-        <br>
+
+        <fieldset style="margin-top: 10px; display: inline-block;">
+            <legend>Hours Filters</legend>
+            <table cellpadding="5">
+                <tr>
+                    <td><label>Total Hours:</label></td>
+                    <td>
+                        <select name="total_mode">
+                            <option value="min" {{ 'selected' if total_mode == 'min' else '' }}>Min</option>
+                            <option value="max" {{ 'selected' if total_mode == 'max' else '' }}>Max</option>
+                        </select>
+                        <input type="number" name="total_hours" value="{{ total_hours if total_hours is not none else '' }}" placeholder="0" style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Direct Hours:</label></td>
+                    <td>
+                        <select name="direct_mode">
+                            <option value="min" {{ 'selected' if direct_mode == 'min' else '' }}>Min</option>
+                            <option value="max" {{ 'selected' if direct_mode == 'max' else '' }}>Max</option>
+                        </select>
+                        <input type="number" name="direct_hours" value="{{ direct_hours if direct_hours is not none else '' }}" placeholder="0" style="width: 60px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Indirect Hours:</label></td>
+                    <td>
+                        <select name="indirect_mode">
+                            <option value="min" {{ 'selected' if indirect_mode == 'min' else '' }}>Min</option>
+                            <option value="max" {{ 'selected' if indirect_mode == 'max' else '' }}>Max</option>
+                        </select>
+                        <input type="number" name="indirect_hours" value="{{ indirect_hours if indirect_hours is not none else '' }}" placeholder="0" style="width: 60px;">
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <br><br>
         <button type="submit">Apply</button>
         <a href="{{ url_for('admin_students') }}"><button type="button">Clear</button></a>
     </form>

@@ -138,12 +138,22 @@ def admin_dashboard():
 @admin_required
 def admin_students():
     # Get filter parameters
-    grad_year = request.args.get('grad_year', type=int)
-    min_total = request.args.get('min_total', type=int)
-    min_direct = request.args.get('min_direct', type=int)
-    min_indirect = request.args.get('min_indirect', type=int)
+    username = request.args.get('username', '')
+    grad_years = request.args.getlist('grad_year', type=int)
     above_requirement = request.args.get('above_requirement')
     requirement = request.args.get('requirement', default=20, type=int)
+
+    # Get all unique grad years for the filter checkboxes
+    all_grad_years = sorted(set(s.grad_year for s in Student.query.all()))
+
+    # Hours filters with min/max mode
+    total_hours = request.args.get('total_hours', type=int)
+    total_mode = request.args.get('total_mode', default='min')
+    direct_hours = request.args.get('direct_hours', type=int)
+    direct_mode = request.args.get('direct_mode', default='min')
+    indirect_hours = request.args.get('indirect_hours', type=int)
+    indirect_mode = request.args.get('indirect_mode', default='min')
+
     sort_by = request.args.get('sort_by', default='username')
     sort_order = request.args.get('sort_order', default='asc')
 
@@ -151,14 +161,25 @@ def admin_students():
     students = Student.query.all()
 
     # Apply filters
-    if grad_year:
-        students = [s for s in students if s.grad_year == grad_year]
-    if min_total:
-        students = [s for s in students if (s.hours_direct + s.hours_indirect) >= min_total]
-    if min_direct:
-        students = [s for s in students if s.hours_direct >= min_direct]
-    if min_indirect:
-        students = [s for s in students if s.hours_indirect >= min_indirect]
+    if username:
+        students = [s for s in students if username.lower() in s.username.lower()]
+    if grad_years:
+        students = [s for s in students if s.grad_year in grad_years]
+    if total_hours is not None:
+        if total_mode == 'min':
+            students = [s for s in students if (s.hours_direct + s.hours_indirect) >= total_hours]
+        else:
+            students = [s for s in students if (s.hours_direct + s.hours_indirect) <= total_hours]
+    if direct_hours is not None:
+        if direct_mode == 'min':
+            students = [s for s in students if s.hours_direct >= direct_hours]
+        else:
+            students = [s for s in students if s.hours_direct <= direct_hours]
+    if indirect_hours is not None:
+        if indirect_mode == 'min':
+            students = [s for s in students if s.hours_indirect >= indirect_hours]
+        else:
+            students = [s for s in students if s.hours_indirect <= indirect_hours]
     if above_requirement:
         students = [s for s in students if (s.hours_direct + s.hours_indirect) >= requirement]
 
@@ -176,9 +197,11 @@ def admin_students():
         students.sort(key=lambda s: s.username.lower(), reverse=reverse)
 
     return render_template('studentList.html', students=students,
-                           grad_year=grad_year, min_total=min_total,
-                           min_direct=min_direct, min_indirect=min_indirect,
+                           username=username, grad_years=grad_years, all_grad_years=all_grad_years,
                            above_requirement=above_requirement, requirement=requirement,
+                           total_hours=total_hours, total_mode=total_mode,
+                           direct_hours=direct_hours, direct_mode=direct_mode,
+                           indirect_hours=indirect_hours, indirect_mode=indirect_mode,
                            sort_by=sort_by, sort_order=sort_order)
 
 
