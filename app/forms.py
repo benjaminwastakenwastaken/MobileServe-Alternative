@@ -8,19 +8,19 @@ from wtforms.validators import Length
 from wtforms.widgets import NumberInput
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username:', validators=[DataRequired()])
+    password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    username = StringField('Username:', validators=[DataRequired()])
+    email = StringField('Email:', validators=[DataRequired(), Email()])
+    password = PasswordField('Password:', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password',
         validators=[DataRequired(), EqualTo('password')]
     )
-    grad_year = IntegerField('Graduation Year', validators=[Optional()], widget=NumberInput(min=2020, max=2035))
+    grad_year = IntegerField('Graduation Year:', validators=[Optional()], widget=NumberInput(min=2020, max=2035))
     is_admin = BooleanField('Register as Admin')
     submit = SubmitField('Register')
 

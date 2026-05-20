@@ -3,8 +3,13 @@ html{
 }
 
 body {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
+}
+
+a {
+    color: rgb(178,83,19);
+    text-decoration: none;
 }
 
 body > div:first-child{
@@ -29,4 +34,24 @@ body > div:first-child a:hover{
 
 hr {
     display: none;
+}
+
+table{
+    border: 1px solid;
+    border-collapse: collapse;
+    color: black;
+}
+
+td, th{
+    padding: 5px;
+}
+
+h1, h2, h3{
+    color: rgb(178,83,19);
+}
+
+button, input[type="submit"]{
+    color: white;
+    background-color: rgb(178,83,19);
+    border: none;
 }
